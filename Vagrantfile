@@ -84,11 +84,11 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, :path =>"provision_fix.sh"
   config.vm.provision "docker" do |d|
     d.run "elasticsearch",
-      args: "-p 9200:9200"
+      args: "-p 9200:9200 --net=my-bridge-network --ip=172.18.0.3"
     d.run "kibana",
-      args: "-p 5601:5601 --link elasticsearch:elasticsearch"
+      args: "-p 5601:5601 --link elasticsearch:elasticsearch --net=my-bridge-network --ip=172.18.0.4"
     d.run "hiroomi/fluentd",
-      args: "-p 24224:24224 -p 8888:8888 -v /data:/fluentd/log -v /vagrant/data/fluentd/etc:/fluentd/etc"
+      args: "-p 24224:24224 -p 8888:8888 -v /data:/fluentd/log -v /vagrant/data/fluentd/etc:/fluentd/etc --net=my-bridge-network --ip=172.18.0.2"
   #  d.build_image "/vagrant/data/docker/eg_sshd",
   #    args: "-t eg_sshd"
   #  d.run "eg_sshd",
